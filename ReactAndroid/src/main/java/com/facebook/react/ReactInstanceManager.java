@@ -9,6 +9,7 @@
 
 package com.facebook.react;
 
+import android.content.Context;
 import javax.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -344,6 +345,51 @@ public abstract class ReactInstanceManager {
           mNativeModuleCallExceptionHandler,
           mJSCConfig,
           mRedBoxHandler);
+    }
+
+   //===================add by w2hhda=========================================
+
+    private Context mContext;
+
+    public Builder setContext(Context context) {
+      this.mContext = context;
+      return this;
+    }
+
+    public ReactInstanceManager build2() {
+
+      Assertions.assertCondition(
+        mUseDeveloperSupport || mJSBundleFile != null,
+        "JS Bundle File has to be provided when dev support is disabled");
+
+      Assertions.assertCondition(
+        mJSMainModuleName != null || mJSBundleFile != null,
+        "Either MainModuleName or JS Bundle File needs to be provided");
+
+      if (mUIImplementationProvider == null) {
+        // create default UIImplementationProvider if the provided one is null.
+        mUIImplementationProvider = new UIImplementationProvider();
+      }
+
+      return new ReactInstanceManagerImpl2(
+        Assertions.assertNotNull(
+          mContext,
+          "Context property has not been set with this builder"),
+        Assertions.assertNotNull(
+          mApplication,
+          "Application property has not been set with this builder"),
+        mCurrentActivity,
+        mDefaultHardwareBackBtnHandler,
+        mJSBundleFile,
+        mJSMainModuleName,
+        mPackages,
+        mUseDeveloperSupport,
+        mBridgeIdleDebugListener,
+        Assertions.assertNotNull(mInitialLifecycleState, "Initial lifecycle state was not set"),
+        mUIImplementationProvider,
+        mNativeModuleCallExceptionHandler,
+        mJSCConfig);
+
     }
   }
 }

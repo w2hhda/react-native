@@ -19,7 +19,33 @@ public class ReactApplicationContext extends ReactContext {
   // We want to wrap ApplicationContext, since there is no easy way to verify that application
   // context is passed as a param, we use {@link Context#getApplicationContext} to ensure that
   // the context we're wrapping is in fact an application context.
-  public ReactApplicationContext(Context context) {
+
+  /*public ReactApplicationContext(Context context) {
     super(context.getApplicationContext());
+  }*/
+
+  protected Context mHostContext;
+  protected Context mPluginContext;
+
+  /**
+   * @param hostContext   of host such as dialer context
+   * @param pluginContext of plugin context such as netcontactservice
+   */
+  public ReactApplicationContext(Context hostContext, Context pluginContext) {
+    super(pluginContext);
+    mHostContext = hostContext;
+    mPluginContext = pluginContext;
   }
+
+  public ReactApplicationContext(Context pluginContext) {
+    super(pluginContext);
+    mHostContext = null;
+    mPluginContext = pluginContext;
+  }
+
+  @Override
+  public Context getApplicationContext() {
+    return mPluginContext;
+  }
+
 }

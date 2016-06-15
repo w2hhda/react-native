@@ -36,6 +36,8 @@ gradle.projectsEvaluated {
                     "${productFlavorName}/${buildTypeName}" :
                     "${buildTypeName}"
 
+            System.out.println("targetName = " + targetName);
+
             // React js bundle directories
             def jsBundleDirConfigName = "jsBundleDir${targetName}"
             def jsBundleDir = elvisFile(config."$jsBundleDirConfigName") ?:
